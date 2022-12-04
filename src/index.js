@@ -2,11 +2,13 @@ import express from 'express'
 import dotenv from 'dotenv'
 import initRouter from './routes/initRouter'
 import connet from './config/connetDB'
+import cookieParser from 'cookie-parser'
 const app=express()
 
 dotenv.config()
 
 const PORT = process.env.PORT
+app.use(cookieParser())
 app.use(express.json())
 connet()
 
