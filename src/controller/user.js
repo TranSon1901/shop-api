@@ -18,7 +18,8 @@ const getUser = async (req,res,next)=>{
       next(err)
     }
 } 
-const deleteUser = async (req,res)=>{
+//DELETE USER
+const deleteUser = async (req,res,next)=>{
   try{
      await User.findByIdAndDelete(req.params.id)
      res.status(200).json('delete user')
@@ -26,7 +27,8 @@ const deleteUser = async (req,res)=>{
     next(err)
   }
 } 
-const updateUser = async (req,res)=>{
+// UPDATE USER
+const updateUser = async (req,res,next)=>{
   try{
      const updateUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -37,4 +39,28 @@ const updateUser = async (req,res)=>{
     next(err)
   }
 } 
-export {getAllUser, getUser,updateUser,deleteUser}
+//USER START
+const userStart = async (req,res,next)=>{
+  const date= new Date()
+  const lastYear= new Date(date.setFullYear(date.getFullYear()-1))
+  try{
+    const data = await User.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json(data)
+  }catch(err){
+    next(err)
+  }
+}
+export {getAllUser, getUser,updateUser,deleteUser,userStart}
