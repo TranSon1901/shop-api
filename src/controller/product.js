@@ -2,8 +2,13 @@ import Product from '../models/Product'
 
 //GET ALL PRODUCT
 const getAllProducts = async (req,res,next)=>{
+    const { categories, ...others} = req.query
+    console.log(req.query)
     try{
-        const products= await Product.find()
+        const products= await Product.find({...others,
+            categories:{
+                $in: categories
+            }})
         res.status(200).json(products)
     }catch(err){
         next(err)

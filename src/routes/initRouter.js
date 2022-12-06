@@ -6,7 +6,7 @@ import routerAuth from './auth'
 const initRouter =(app)=>{
   app.use('/api/users', routerUser)
   app.use('/api/products', routerProduct)
-  app.use('/api/cart', routerCart)
+  app.use('/api/carts', routerCart)
   app.use('/api/order', routerOrder)
   app.use('/api/auth', routerAuth)
 }

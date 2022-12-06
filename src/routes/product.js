@@ -1,11 +1,12 @@
 import express from 'express'
 import { createProduct, deleteProduct, getAllProducts, getProduct, updateProduct } from '../controller/product'
+import { verifyAdmin, verifyUser } from '../utils/verifyToken'
 const router= express.Router()
 
 router.get('/',getAllProducts)
 router.get('/:id',getProduct)
-router.post('/', createProduct)
-router.put('/:id', updateProduct)
-router.delete('/:id',deleteProduct)
+router.post('/',verifyAdmin, createProduct)
+router.put('/:id',verifyAdmin, updateProduct)
+router.delete('/:id',verifyAdmin,deleteProduct)
 
 export default router
